@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <style>
+      #login_div {
+        border: 1px solid black;
+        width: 30%;
+        border-radius: 30px;
+        margin: auto;
+        margin-top: 50px;
+        text-align: center;
+        font-size: 22px;
+        padding: 20px 20px;
+        /* background-color: rgb(53, 6, 6); */
+        background-image: url("https://health.clevelandclinic.org/wp-content/uploads/sites/3/2019/06/cropped-GettyImages-643764514.jpg");
+        background-size: cover;
+        color: rgb(255, 255, 255);
+        font-weight: bold;
+      }
+      input {
+        height: 25px;
+        width: 80%;
+      }
+      body {
+        background-image: url("https://www.expatica.com/app/uploads/sites/5/2014/05/french-food-1920x1080.jpg");
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar_container"></div>
+    <div id="login_div">
+      <form action="">
+        <label for="">Username</label><br />
+        <input type="text" id="username" placeholder="Username" /><br /><br />
+
+        <label for="">Password</label><br />
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+        /><br /><br />
+        <input type="submit" name="" id="" /><br />
+      </form>
+    </div>
+  </body>
+</html>
+
+<script type="module">
+  // https://masai-api-mocker.herokuapp.com/auth/register
+
+  import navbar from "./components/navbas.js";
+
+  document.querySelector("#navbar_container").innerHTML = navbar();
+
+  document.querySelector("form").addEventListener("submit", login);
+
+  async function login(e) {
+    e.preventDefault();
+    let login_Data = {
+      username: document.getElementById("username").value,
+      password: document.getElementById("password").value,
+    };
+
+    login_Data = JSON.stringify(login_Data);
+
+    let login_url = "https://masai-api-mocker.herokuapp.com/auth/login";
+
+    let response = await fetch(login_url, {
+      method: "POST",
+      body: login_Data,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    let data = await response.json();
+    if (data.error == false) {
+      alert("Login Successful !");
+      console.log(data);
+      let username = document.getElementById("username").value;
+      // getUserDetails(username, data.token);
+      window.location.href = "/9.2foodAPP/index.html";
+    } else {
+      alert(data.message);
+    }
+  }
+
+  async function getUserDetails(username, token) {
+    let api = `https://masai-api-mocker.herokuapp.com/user/${username}`;
+
+    let res = await fetch(api, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    let data = await res.json();
+    console.log(data);
+    document.querySelector("owner").textContent = data.name;
+  }
+</script>

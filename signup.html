@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <link rel="stylesheet" href="/styles/navbar.css" />
+  <link rel="stylesheet" href="./styles/signup.css" />
+  <body>
+    <div id="navbar_container"></div>
+    <div id="main">
+      <div>
+        <form>
+          <label for="">Name</label><br />
+          <input type="text" id="name" placeholder="Name" /><br /><br />
+
+          <label for="">Email</label><br />
+          <input type="email" id="email" placeholder="email" /><br /><br />
+
+          <label for="">Username</label><br />
+          <input type="text" id="username" placeholder="username" /><br /><br />
+
+          <label for="">Password</label><br />
+          <input
+            type="password"
+            id="password"
+            placeholder="password"
+          /><br /><br />
+
+          <label for="">Mobile</label><br />
+          <input
+            type="number"
+            id="mobile"
+            placeholder="Enter Number"
+          /><br /><br />
+          <label for="">Description</label><br />
+          <input
+            type="text"
+            id="description"
+            placeholder="description"
+          /><br /><br />
+          <input type="submit" name="" id="submit" /><br />
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
+<script type="module">
+  // https://masai-api-mocker.herokuapp.com/auth/register
+  import navbar from "./components/navbas.js";
+  document.querySelector("#navbar_container").innerHTML = navbar();
+
+  document.querySelector("form").addEventListener("submit", Register);
+
+  async function Register(event) {
+    try {
+      event.preventDefault();
+      var Register_data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        username: document.getElementById("username").value,
+        mobile: document.getElementById("mobile").value,
+        description: document.getElementById("description").value,
+      };
+      Register_data = JSON.stringify(Register_data);
+      console.log(Register_data);
+    } catch (er) {
+      console.log(er);
+    }
+
+    let reg_api = `https://masai-api-mocker.herokuapp.com/auth/register`;
+
+    let response = await fetch(reg_api, {
+      method: "POST",
+      body: Register_data,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let data = await response.json();
+    console.log(data);
+    if (data.error == false) {
+      alert(data.message);
+      window.location.href = "/9.2foodAPP/login.html";
+    }
+  }
+</script>

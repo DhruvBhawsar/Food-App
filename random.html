@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>random</title>
+  </head>
+  <link rel="stylesheet" href="/styles/navbar.css" />
+  <link rel="stylesheet" href="/styles/random.css" />
+  <body>
+    <div id="nav_container"></div>
+    <div id="random_cont"></div>
+    <!-- <div id="random_cont"></div> -->
+  </body>
+</html>
+<script type="module">
+  import navbar from "./components/navbas.js";
+
+  let nav_container = document.querySelector("#nav_container");
+  nav_container.innerHTML = navbar();
+
+  async function random_getData() {
+    try {
+      let response = await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?f=b`
+      );
+      let data = await response.json();
+      append_Random(data.meals);
+      console.log(data.meals);
+    } catch (er) {
+      console.log(er);
+    }
+  }
+  random_getData();
+
+  function append_Random(data) {
+    data.map(function ({ strMealThumb, strMeal, strInstructions }) {
+      var div = document.createElement("div");
+      div.setAttribute("id", "box");
+
+      var image = document.createElement("img");
+      image.src = strMealThumb;
+
+      var title = document.createElement("p");
+      title.textContent = strMeal;
+
+      var des = document.createElement("p");
+      des.textContent = strInstructions;
+
+      div.append(image, title, des);
+      document.querySelector("#random_cont").append(div);
+    });
+  }
+</script>

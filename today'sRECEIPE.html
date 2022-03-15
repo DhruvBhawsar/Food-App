@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <link rel="stylesheet" href="/styles/today'sRECEIPE.css" />
+  </head>
+
+  <body>
+    <div id="nav_container"></div>
+    <div id="todayHEADING">
+      <h1><i>Today's Receipe</i></h1>
+    </div>
+    <div id="main">
+      <div id="left"></div>
+      <div id="right"></div>
+    </div>
+  </body>
+</html>
+<script type="module">
+  import navbar from "/components/navbas.js";
+
+  let nav_container = document.querySelector("#nav_container");
+  nav_container.innerHTML = navbar();
+
+  async function getData() {
+    try {
+      let response = await fetch(
+        `https://www.themealdb.com/api/json/v1/1/random.php`
+      );
+      let data = await response.json();
+      //   apppendDATA(data.meals);
+      console.log(data.meals);
+      Receipe(data.meals);
+    } catch (er) {
+      console.log(er);
+    }
+  }
+  getData();
+
+  function Receipe(data) {
+    let { strMealThumb, strInstructions } = data[0];
+
+    let image = document.createElement("img");
+    image.src = strMealThumb;
+    console.log(image);
+
+    let details = document.createElement("p");
+    details.textContent = strInstructions;
+    console.log(details);
+
+    document.querySelector("#left").append(image);
+    document.querySelector("#right").append(details);
+  }
+</script>

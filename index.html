@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index1</title>
+  </head>
+  <link rel="stylesheet" href="styles/navbar.css" />
+  <link rel="stylesheet" href="styles/index.css" />
+  <style></style>
+  <body>
+    <div id="nav_container"></div>
+    <div id="meal_cont"></div>
+  </body>
+</html>
+<script type="module">
+  import navbar from "./components/navbas.js";
+  import clicked_Search_result from "/script/appendData.js";
+
+  let nav_container = document.querySelector("#nav_container");
+  nav_container.innerHTML = navbar();
+
+  document.querySelector("#search").addEventListener("input", function () {
+    searchMeal();
+  });
+
+  async function searchMeal() {
+    try {
+      let search = document.querySelector("#search").value;
+
+      let res = await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`
+      );
+
+      let data = await res.json();
+      console.log(data);
+      if (search.length <= 1) {
+        document.querySelector("#searchRESULT").innerHTML = null;
+        return false;
+      }
+      append_Search_Meals(data.meals);
+      // console.log(data);
+    } catch (er) {
+      console.log(er);
+    }
+  }
+
+  let location = document.querySelector("#meal_cont");
+  function append_Search_Meals(meals) {
+    let search = document.querySelector("#search").value;
+    document.querySelector("#searchRESULT").innerHTML = null;
+
+    if (meals === undefined) {
+      return false;
+    }
+
+    meals.map(function (ele) {
+      let p = document.createElement("p");
+      p.innerText = ele.strMeal;
+
+      p.addEventListener("click", () => {
+        clicked_Search_result(ele, location);
+      });
+      document.querySelector("#searchRESULT").append(p);
+    });
+  }
+
+  getData();
+  async function getData() {
+    try {
+      let response = await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?f=f`
+      );
+      let data = await response.json();
+      apppendDATA(data.meals);
+      // console.log(data);
+    } catch (er) {
+      console.log(er);
+    }
+  }
+
+  function apppendDATA(data) {
+    data.map(function ({ strMealThumb, strMeal }) {
+      var div = document.createElement("div");
+
+      var image = document.createElement("img");
+      image.src = strMealThumb;
+
+      var title = document.createElement("p");
+      title.textContent = strMeal;
+
+      div.append(image, title);
+      document.querySelector("#meal_cont").append(div);
+    });
+  }
+</script>

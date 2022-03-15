@@ -1,0 +1,16 @@
+#random_cont {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+img {
+  height: 300px;
+}
+#random_cont {
+  margin-top: 20px;
+}
+#box {
+  border: 1px solid black;
+  height: 600px;
+  overflow: hidden;
+}
