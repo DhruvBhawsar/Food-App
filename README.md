@@ -3,9 +3,9 @@
 It is a web application that can search for recipes. Made this by using Free Meal API.
 
 <h3>Technologies we used:<h3/>
-  HTML
-  CSS
-  JavaScript
+  <li>HTML<li/>
+  <li>CSS<li/>
+  <li>JavaScript<li/>
 Features:
   API Fetching
   Sign-in/Sign-up
