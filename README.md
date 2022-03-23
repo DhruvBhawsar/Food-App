@@ -2,7 +2,7 @@
 
 It is a web application that can search for recipes. Made this by using Free Meal API.
 
-Technologies we used:
+<h3>Technologies we used:<h3/>
   HTML
   CSS
   JavaScript
